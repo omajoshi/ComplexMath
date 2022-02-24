@@ -30,7 +30,7 @@ class ComplexNumber:
             if self.r == other.r and self.theta == other.theta:
                 return True
         if self.mode == BOTH or self.mode == RECT:
-            if self.x == other.x and self.y == other.y:
+            if self.real == other.real and self.imag == other.imag:
                 return True
         return False
 
@@ -40,14 +40,14 @@ class ComplexNumber:
         if isinstance(other, ComplexNumber):
             if other.mode == POLAR:
                 other.to_rect()
-            x_new = self.real+other.real
-            y_new = self.imag+other.imag
+            real_new = self.real+other.real
+            imag_new = self.imag+other.imag
         elif isinstance(other, int | float):
-            x_new = self.real+other
-            y_new = self.imag
+            real_new = self.real+other
+            imag_new = self.imag
         else:
             raise NotImplementedError(f"ComplexNumber addition has not been implemented with {type(other)}")
-        return ComplexNumber(RECT, x_new, y_new)
+        return ComplexNumber(RECT, real_new, imag_new)
 
     def __radd__(self, other: ComplexNumber | int | float) -> ComplexNumber:
         return self+other
@@ -58,14 +58,14 @@ class ComplexNumber:
         if isinstance(other, ComplexNumber):
             if other.mode == POLAR:
                 other.to_rect()
-            x_new = self.real-other.real
-            y_new = self.imag-other.imag
+            real_new = self.real-other.real
+            imag_new = self.imag-other.imag
         elif isinstance(other, int | float):
-            x_new = self.real-other
-            y_new = self.imag
+            real_new = self.real-other
+            imag_new = self.imag
         else:
             raise NotImplementedError(f"ComplexNumber subtraction has not been implemented with {type(other)}")
-        return ComplexNumber(RECT, x_new, y_new)
+        return ComplexNumber(RECT, real_new, imag_new)
 
     def __rsub__(self, other: ComplexNumber | int | float) -> ComplexNumber:
         return -(self-other)
@@ -83,17 +83,17 @@ class ComplexNumber:
             if self.mode == BOTH:
                 r_new = self.r*other
                 theta_new = self.theta
-                x_new = self.real*other
-                y_new = self.imag*other
-                return ComplexNumber(BOTH, r_new, theta_new, x_new, y_new)
+                real_new = self.real*other
+                imag_new = self.imag*other
+                return ComplexNumber(BOTH, r_new, theta_new, real_new, imag_new)
             elif self.mode == POLAR:
                 r_new = self.r*other
                 theta_new = self.theta
                 return ComplexNumber(POLAR, r_new, theta_new)
             elif self.mode == RECT:
-                x_new = self.real*other
-                y_new = self.imag*other
-                return ComplexNumber(RECT, x_new, y_new)
+                real_new = self.real*other
+                imag_new = self.imag*other
+                return ComplexNumber(RECT, real_new, imag_new)
         else:
             raise NotImplementedError(f"ComplexNumber multiplication has not been implemented with {type(other)}")
 
@@ -113,17 +113,17 @@ class ComplexNumber:
             if self.mode == BOTH:
                 r_new = self.r/other
                 theta_new = self.theta
-                x_new = self.real/other
-                y_new = self.imag/other
-                return ComplexNumber(BOTH, r_new, theta_new, x_new, y_new)
+                real_new = self.real/other
+                imag_new = self.imag/other
+                return ComplexNumber(BOTH, r_new, theta_new, real_new, imag_new)
             elif self.mode == POLAR:
                 r_new = self.r/other
                 theta_new = self.theta
                 return ComplexNumber(POLAR, r_new, theta_new)
             elif self.mode == RECT:
-                x_new = self.real/other
-                y_new = self.imag/other
-                return ComplexNumber(RECT, x_new, y_new)
+                real_new = self.real/other
+                imag_new = self.imag/other
+                return ComplexNumber(RECT, real_new, imag_new)
         else:
             raise NotImplementedError(f"ComplexNumber division has not been implemented with {type(other)}")
 
@@ -140,17 +140,17 @@ class ComplexNumber:
             if self.mode == BOTH:
                 r_new = other/self.r
                 theta_new = -self.theta
-                x_new = other/self.real
-                y_new = other/self.imag
-                return ComplexNumber(BOTH, r_new, theta_new, x_new, y_new)
+                real_new = other/self.real
+                imag_new = other/self.imag
+                return ComplexNumber(BOTH, r_new, theta_new, real_new, imag_new)
             elif self.mode == POLAR:
                 r_new = other/self.r
                 theta_new = -self.theta
                 return ComplexNumber(POLAR, r_new, theta_new)
             elif self.mode == RECT:
-                x_new = other/self.real
-                y_new = other/self.imag
-                return ComplexNumber(RECT, x_new, y_new)
+                real_new = other/self.real
+                imag_new = other/self.imag
+                return ComplexNumber(RECT, real_new, imag_new)
         else:
             raise NotImplementedError(f"ComplexNumber division has not been implemented with {type(other)}")
         
@@ -206,13 +206,14 @@ class ComplexNumber:
 
     def as_rect(self) -> ComplexNumber:
         if self.mode == POLAR:
-            new_x = self.r*math.cos(math.tau*self.theta)
-            new_y = self.r*math.sin(math.tau*self.theta)
-            return ComplexNumber(RECT, new_x, new_y)
+            new_real = self.r*math.cos(math.tau*self.theta)
+            new_imag = self.r*math.sin(math.tau*self.theta)
+            return ComplexNumber(BOTH, self.r, self.theta, new_real, new_imag)
         return self
 
     def as_polar(self) -> ComplexNumber:
         if self.mode == RECT:
-            self.r = math.sqrt(self.real**2 + self.imag**2)
-            self.theta = (math.atan2(self.imag, self.real)/math.tau)%1
+            new_r = math.sqrt(self.real**2 + self.imag**2)
+            new_theta = math.atan2(self.imag, self.real)/math.tau
+            return ComplexNumber(BOTH, new_r, new_theta, self.real, self.imag)
         return self
