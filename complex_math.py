@@ -78,7 +78,12 @@ class ComplexNumber:
                 other.to_polar()
             r_new = self.r*other.r
             theta_new = self.theta+other.theta
-            return ComplexNumber(POLAR, r_new, theta_new)
+            if self.mode == BOTH and other.mode == BOTH:
+                real_new = self.real*other.real - self.imag*other.imag
+                imag_new = self.real*other.imag + self.imag*other.real
+                return ComplexNumber(BOTH, r_new, theta_new, real_new, imag_new)
+            else:
+                return ComplexNumber(POLAR, r_new, theta_new)
         elif isinstance(other, int | float):
             if self.mode == BOTH:
                 r_new = self.r*other
