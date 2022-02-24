@@ -136,6 +136,7 @@ class ComplexNumber:
             r_new = other.r/self.r
             theta_new = other.theta-self.theta
             return ComplexNumber(POLAR, r_new, theta_new)
+        ''' # oops this is wrong
         elif isinstance(other, int | float):
             if self.mode == BOTH:
                 r_new = other/self.r
@@ -151,6 +152,7 @@ class ComplexNumber:
                 real_new = other/self.real
                 imag_new = other/self.imag
                 return ComplexNumber(RECT, real_new, imag_new)
+        '''
         else:
             raise NotImplementedError(f"ComplexNumber division has not been implemented with {type(other)}")
         
