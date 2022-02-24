@@ -78,12 +78,15 @@ class ComplexNumber:
                 other.to_polar()
             r_new = self.r*other.r
             theta_new = self.theta+other.theta
+            return ComplexNumber(POLAR, r_new, theta_new)
+            ''' # found another bug -- 
             if False and self.mode == BOTH and other.mode == BOTH: # skip because this will cause a series of multiplications to stay in both-mode. maybe check this before to_polar()
                 real_new = self.real*other.real - self.imag*other.imag
                 imag_new = self.real*other.imag + self.imag*other.real
                 return ComplexNumber(BOTH, r_new, theta_new, real_new, imag_new)
             else:
                 return ComplexNumber(POLAR, r_new, theta_new)
+                '''
         elif isinstance(other, int | float):
             if self.mode == BOTH:
                 r_new = self.r*other
@@ -141,6 +144,8 @@ class ComplexNumber:
             r_new = other.r/self.r
             theta_new = other.theta-self.theta
             return ComplexNumber(POLAR, r_new, theta_new)
+        else:
+            raise NotImplementedError(f"ComplexNumber division has not been implemented with {type(other)}")
         ''' # oops this is wrong
         elif isinstance(other, int | float):
             if self.mode == BOTH:
@@ -158,8 +163,6 @@ class ComplexNumber:
                 imag_new = other/self.imag
                 return ComplexNumber(RECT, real_new, imag_new)
         '''
-        else:
-            raise NotImplementedError(f"ComplexNumber division has not been implemented with {type(other)}")
         
     def __neg__(self) -> ComplexNumber:
         if self.mode == BOTH:
