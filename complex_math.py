@@ -78,7 +78,7 @@ class ComplexNumber:
                 other.to_polar()
             r_new = self.r*other.r
             theta_new = self.theta+other.theta
-            if False or self.mode == BOTH and other.mode == BOTH: # skip because this will cause a series of multiplications to stay in both-mode. maybe check this before to_polar()
+            if False and self.mode == BOTH and other.mode == BOTH: # skip because this will cause a series of multiplications to stay in both-mode. maybe check this before to_polar()
                 real_new = self.real*other.real - self.imag*other.imag
                 imag_new = self.real*other.imag + self.imag*other.real
                 return ComplexNumber(BOTH, r_new, theta_new, real_new, imag_new)
