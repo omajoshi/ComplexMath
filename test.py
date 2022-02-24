@@ -22,22 +22,22 @@ for (x, y, z), (w, v, u) in zip(product(cs, repeat=3), product(cs_om, repeat=3))
         if repr(t3) != repr(t4):
             print("new error")
 
-        print("old out str    ", end=' ')
+        print("old out default  ", end=' ')
         for a, pad in zip([x,y,z,t1,t2], pads):
             print(str(a).ljust(pad), end='')
         print()
 
-        print("new out str    ", end=' ')
+        print("new out default  ", end=' ')
         for a, pad in zip([w,v,u,t3,t4], pads):
             print(str(a).ljust(pad), end='')
         print()
 
-        print("new out to rect", end=' ')
+        print("new out to rect  ", end=' ')
         for a, pad in zip([w,v,u,t3,t4], pads):
             print(str(a.as_rect()).ljust(pad), end='')
         print()
 
-        print("new out to pol ", end=' ')
+        print("new out to polar ", end=' ')
         for a, pad in zip([w,v,u,t3,t4], pads):
             print(str(a.as_polar()).ljust(pad), end='')
         print()
